@@ -1,5 +1,5 @@
 {
-  open Token
+  open Parser
 }
 let space=[' ''\n''\t']
 let lettre=['0'-'9''a'-'z''A'-'Z']
