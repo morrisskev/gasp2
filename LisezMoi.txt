@@ -10,19 +10,14 @@ Tapez "make" dans le terminal pour compiler tous les fichiers.
 
 Exécution :
 
-Tapez "./parser" suivi d'une des commandes suivantes :
-
--print nom_du_fichier : pour afficher l'ast
-
--test nom_du_fichier mot : pour tester si un mot est accepté par un automate
-
--check nom_du_fichier : pour tester si l'automate est dans le bon format
+Tapez "./parser < nom_du_fichier mot" avec "nom_du_fichier" étant l'endroit où ce situe le fichier par exemple exemples_phase1/palindrome
+et mot est un mot quelconque par exemple "abcba".
 
 
 Travail :
 
 La partie 1 et 2 du projet ont été entièrement soit : lexer et parser (lexer.mll, parser.mly etc..) pour l'analyseur lexical et syntaxique,
-l'arbre de syntaxe créé dans ast.ml et affichable via -print, un interpréteur dans main.ml et exécutable avec -test.
+l'arbre de syntaxe créé dans ast.ml affichage à l'exécution s'il est au bon format et un interpréteur dans main.ml.
 
 Les différentes erreurs ont aussi été géré selon le protocole de la partie 1 et 2.
 
