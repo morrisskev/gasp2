@@ -16,6 +16,6 @@ rule lexer = parse
     | ')' {PARD}
     | ',' {COMMA}
     | ';' {SEMICOLON}
-    | lettre as c {LETTRE(c)}
+    | lettre {LETTRE((Lexing.lexeme lexbuf))}
     | eof  { EOF }
     | _    { failwith "Mauvaise syntaxe." }
