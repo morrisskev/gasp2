@@ -1,6 +1,6 @@
-let lexbuf file = Lexing.from_channel (open_in file) 
+let lexbuf = Lexing.from_channel stdin
 
-let ast lexbuf = Parser.axiome Lexer.lexer lexbuf
+let ast = Parser.axiome Lexer.lexer lexbuf
 
 let rec containElt l e =
   match l with
@@ -73,8 +73,14 @@ let test (ast:Ast.automate) word =
   |(is,ss,st,ist,iss),t -> isAcceptable ist [iss] t word
 
 let _ =
-  match Sys.argv with
-  | [|_;"-print";file|] ->  Printf.printf "%s\n" (Ast.toString (ast (lexbuf file)))
-  | [|_;"-test";file;word|] -> if (test (ast (lexbuf file)) word)=true then Printf.printf "Acceptable\n" else failwith "Inacceptable\n"
-  | [|_;"-check";file|]-> if (verifyAutomate (ast (lexbuf file))) =true then Printf.printf "Bon format\n" else failwith "Mauvais format\n"
-  |_ -> failwith "Argument inconnu, utilisez [ -print nom_du_fichier ], [ -test nom_du_fichier mot ] ou [ -check nom_du_fichier ]"
+  if (verifyAutomate ast)=true then
+    Printf.printf "L'automate est correcte.\n------------------------------\nAffichage de l'automate :\n\n%s------------------------------\n" (Ast.toString ast)
+  else
+    failwith "Mauvais format d'automate."
+
+let _ =
+  Printf.printf "Mot à tester : %s\n" (Sys.argv.(1));
+  if (test ast (Sys.argv.(1)))=true then
+    Printf.printf "Le mot est acceptable.\n"
+  else
+    Printf.printf "Le mot n'est pas acceptable.\n"
