@@ -12,12 +12,8 @@ axiome:
     a = automate EOF {a}
 
 automate:
-    d = declarations e=entree {d,e}
-
-entree:
-    | transitions {t}
-	| program {p}
-
+    |d = declarations t = transitions {Transitions(d,t)}
+    |d = declarations p = program {Program(d,p)}
 
 declarations:
     s1 = is s2 = ss s3 = st s4 = ist s5 = iss {s1,s2,s3,s4,s5}
@@ -57,21 +53,21 @@ instructions_2:
     l=LETTRE COLONS c= choice_top {(l,c)}
 
 choice_next: 
-    | POP {Pop()}
+    | POP {Pop}
     | PUSH l=LETTRE {Push(l)}
     | CHANGE l=LETTRE {Change(l)}
     | REJECT {failwith "reject"}
     | BEGIN TOP l=LETTRE COLONS op=choice END {CaseTop([(l,op)])}
 
 choice_top: 
-    | POP {Pop()}
+    | POP {Pop}
     | PUSH l=LETTRE {Push(l)}
     | CHANGE l=LETTRE {Change(l)}
     | REJECT {failwith "reject"}
     | BEGIN NEXT l=LETTRE COLONS op=choice END {CaseNext([(l,op)])}
 
 choice: 
-    | POP {Pop()}
+    | POP {Pop}
     | PUSH l=LETTRE {Push(l)}
     | CHANGE l=LETTRE {Change(l)}
     | REJECT {failwith "reject"}

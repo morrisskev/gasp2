@@ -1,21 +1,18 @@
 type transitions = (string * (string list) * string * string * (string list))
 
-type automate = (string list * string list * string list * string *string)* transitions list
-
 type block = 
   | Pop
-  | Push of char
-  | Change of char 
+  | Push of string
+  | Change of string 
   | CaseState of (oper list)
   | CaseTop of (oper list)
   | CaseNext of (oper list) 
   | Reject 
-and oper = char * block
+and oper = string * block
 
-type entree = 
-| Transitions of transitions list
-| Program of block
-
+type automate = 
+  |Transitions of (string list * string list * string list * string *string)* transitions list
+  |Program of (string list * string list * string list * string *string)* block list
 
 let rec print l =
   match l with
@@ -40,8 +37,8 @@ let rec printInstructions ins t=
 	let tabulation = tabs t in
     match ins with
     | Pop -> "pop"
-    | Push c -> "push "^Char.escaped c
-    | Change n -> "change "^Char.escaped n
+    | Push c -> "push "^c
+    | Change n -> "change "^n
     | CaseState l -> "begin\n"^(tabs (t+1))^"case state of \n"^(printOperation l (t+2))^tabulation
 	  | CaseTop l -> "begin\n"^(tabs (t+1))^"case top of \n"^(printOperation l (t+2))^tabulation
     | CaseNext l -> "begin\n"^(tabs (t+1))^"case next of \n"^(printOperation l (t+2))^tabulation
@@ -51,15 +48,15 @@ and printOperation ops t =
 	let tabulation = tabs t in
 	match ops with
   	| [] -> ""
-    | (c, CaseState([(c2,op)])) :: tl -> tabulation ^Char.escaped c^": begin case state of "^Char.escaped c2^": "^(printInstructions op 0)^" end\n"^(printOperation tl t)
-    | (c, CaseTop([(c2,op)])) :: tl -> tabulation ^Char.escaped c^": begin case top of "^Char.escaped c2^": "^(printInstructions op 0)^" end\n"^(printOperation tl t)
-    | (c, CaseNext([(c2,op)])) :: tl -> tabulation ^Char.escaped c^": begin case next of "^Char.escaped c2^": "^(printInstructions op 0)^" end\n"^(printOperation tl t)
-	  | (c, ins) :: tl -> tabulation^Char.escaped c^":"^(printInstructions ins t)^"\n"^(printOperation tl t)
+    | (c, CaseState([(c2,op)])) :: tl -> tabulation ^c^": begin case state of "^c2^": "^(printInstructions op 0)^" end\n"^(printOperation tl t)
+    | (c, CaseTop([(c2,op)])) :: tl -> tabulation ^c^": begin case top of "^c2^": "^(printInstructions op 0)^" end\n"^(printOperation tl t)
+    | (c, CaseNext([(c2,op)])) :: tl -> tabulation ^c^": begin case next of "^c2^": "^(printInstructions op 0)^" end\n"^(printOperation tl t)
+	  | (c, ins) :: tl -> tabulation^c^":"^(printInstructions ins t)^"\n"^(printOperation tl t)
 
 let trans_or_prog a =
 	match a with
-	| Transitions t -> "\ntransitions:\n"^(printTransitions t)
-	| Program p -> "\nprogram: "^(printInstructions p 1)
+	| Transitions (d,t) -> "\ntransitions:\n"^(printTransitions t)
+	| Program (d,p) -> "\nprogram: "^(printInstructions p 1)
 
 let toString ast =
   match ast with
