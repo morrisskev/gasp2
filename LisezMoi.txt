@@ -25,4 +25,4 @@ Répartition :
 
 Hou Maxime : Lexer, Parser, Ast, Main, gestion des erreurs etc.. => Partie 1 et 2
 
-Morrisson Kevin :
+Morrisson Kevin : Lexer, Parser, Ast, Main, gestion des erreurs etc.. => Partie 3
